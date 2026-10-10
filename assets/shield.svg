@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 144" fill="none">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --edge: #476780;
+      --panel: #dce6ed;
+      --road: #375971;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --edge: #a9c2d5;
+        --panel: #1b2d3b;
+        --road: #c2d5e3;
+      }
+    }
+  </style>
+  <!-- 盾牌外轮廓。 -->
+  <path d="M60 8 108 26v38c0 33-18 57-48 72C30 121 12 97 12 64V26L60 8Z" fill="var(--panel)" stroke="var(--edge)" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="m60 18 38 15v31c0 27-14 47-38 61C36 111 22 91 22 64V33l38-15Z" stroke="var(--edge)" stroke-width="1" opacity=".25"/>
+  <!-- 道路两侧及中央标线。 -->
+  <path d="M49 49 39 93M71 49l10 44" stroke="var(--road)" stroke-width="4"/>
+  <path d="M60 48v8m0 11v8m0 11v8" stroke="var(--road)" stroke-width="3"/>
+</svg>

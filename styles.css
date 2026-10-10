@@ -1,0 +1,143 @@
+/* 本地字体：离线打开 HTML 时也能保持一致的排版。 */
+@font-face {
+  font-family: "DM Sans";
+  src: url("./fonts/dm-sans-latin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+}
+
+/* 浅色主题。修改这些变量即可调整配色。 */
+:root {
+  --background: #edf2f5;
+  --ink: #203749;
+  --accent: #55748b;
+  --line: rgba(57, 85, 107, 0.2);
+  --glow: rgba(159, 186, 205, 0.14);
+  --selection: #ccdce7;
+}
+
+/* 自动跟随系统主题，没有手动切换开关。 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #101a23;
+    --ink: #e7eef3;
+    --accent: #a6c0d3;
+    --line: rgba(166, 192, 211, 0.2);
+    --glow: rgba(71, 109, 137, 0.12);
+    --selection: #355064;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { color-scheme: light dark; }
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--ink);
+  font-family: "DM Sans", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--selection); color: var(--ink); }
+
+.page {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 64px clamp(32px, 7vw, 128px);
+  background:
+    radial-gradient(ellipse at 50% 38%, var(--glow), transparent 60%),
+    var(--background);
+}
+
+/* 细边框与实线角标形成清晰、稳定的页面边界。 */
+.page::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 24px;
+  border: 1px solid var(--line);
+  pointer-events: none;
+}
+
+.page::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 24px;
+  left: 24px;
+  width: 27px;
+  height: 27px;
+  border-top: 2px solid var(--accent);
+  border-left: 2px solid var(--accent);
+  pointer-events: none;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 440px;
+  padding: 60px 0;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+}
+
+.shield {
+  display: block;
+  width: 128px;
+  height: auto;
+  flex: 0 0 auto;
+  margin-bottom: 42px;
+}
+
+h1 {
+  margin: 0;
+  max-width: 100%;
+  font-size: clamp(58px, 7.6vw, 118px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+.brand-divider {
+  width: 62px;
+  height: 2px;
+  margin-top: 42px;
+  background: var(--accent);
+}
+
+@media (min-width: 1600px) {
+  .shield { width: 148px; margin-bottom: 48px; }
+  .brand-divider { margin-top: 48px; }
+}
+
+@media (max-width: 900px) {
+  .page { padding: 48px 44px; }
+  .shield { width: 118px; margin-bottom: 36px; }
+  h1 { font-size: clamp(48px, 7.8vw, 70px); }
+}
+
+@media (max-width: 600px) {
+  .page { padding: 32px 30px; }
+  .page::before { inset: 16px; }
+  .page::after { top: 16px; left: 16px; width: 22px; height: 22px; }
+  .hero { min-height: 420px; padding: 48px 0; }
+  .shield { width: 104px; margin-bottom: 33px; }
+  h1 { font-size: clamp(36px, 11.5vw, 62px); line-height: 1.1; letter-spacing: -0.045em; }
+  .brand-divider { width: 46px; margin-top: 32px; }
+}
