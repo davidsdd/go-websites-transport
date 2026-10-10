@@ -8,6 +8,45 @@
   <meta name="theme-color" content="#101a23" media="(prefers-color-scheme: dark)">
   <!-- 修改这里可以更改浏览器标签页上的标题。 -->
   <title>Transport Service</title>
+  <!-- 提前读取本地字体；无需联网。 -->
+  <link rel="preload" href="./fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/shield.svg" as="image">
+  <!-- 首屏背景直接适配主题，样式加载期间也保持相同底色。 -->
+  <style>
+    html { color-scheme: light dark; background: #edf2f5; }
+    @media (prefers-color-scheme: dark) { html { background: #101a23; } }
+    html.startup-pending .page > * { opacity: 0 !important; }
+    html.startup-fallback {
+      --font-cormorant: Georgia, serif;
+      --font-dm-sans: Arial, sans-serif;
+      --font-grotesk: Arial, sans-serif;
+      --font-mono: monospace;
+    }
+  </style>
+  <!-- 字体和本地图标准备好后一起显示，避免默认字体切换及图标迟到。 -->
+  <script>
+    (() => {
+      if (!document.fonts) return;
+      const root = document.documentElement;
+      root.classList.add("startup-pending");
+      const reveal = () => root.classList.remove("startup-pending");
+      // 文件缺失或加载异常时仍能显示内容，不会一直隐藏页面。
+      const limit = setTimeout(() => {
+        // 超时后保持回退字体，避免迟到的字体再次改变已显示的排版。
+        root.classList.add("startup-fallback");
+        reveal();
+      }, 3000);
+      window.addEventListener("DOMContentLoaded", () => {
+        const fonts = Array.from(document.fonts, font => font.load());
+        const images = Array.from(document.images, image =>
+          typeof image.decode === "function" ? image.decode() : Promise.resolve()
+        );
+        Promise.allSettled([...fonts, ...images])
+          .then(() => document.fonts.ready)
+          .then(() => { clearTimeout(limit); reveal(); }, reveal);
+      }, { once: true });
+    })();
+  </script>
   <link rel="stylesheet" href="./styles.css">
   <link rel="icon" href="./assets/shield.svg" type="image/svg+xml">
 </head>
